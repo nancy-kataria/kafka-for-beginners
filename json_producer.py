@@ -37,3 +37,16 @@ schema_str = """{
     }
   }"""
 
+def temp_to_dict(temp, ctx):
+    return {"city":temp.city,
+            "reading":temp.reading,
+            "unit":temp.unit,
+            "timestamp":temp.timestamp}
+
+data = [Temperature('London', 12, 'C', round(time.time()*1000)),
+        Temperature('Chicago', 63, 'F', round(time.time()*1000)),
+        Temperature('Berlin', 14, 'C', round(time.time()*1000)),
+        Temperature('Madrid', 18, 'C', round(time.time()*1000)),
+        Temperature('Phoenix', 78, 'F', round(time.time()*1000))]
+
+
