@@ -55,4 +55,20 @@ def delivery_report(err, event):
     else:
         print(f'Temp reading for {event.key().decode("utf8")} produced to {event.topic()}')
 
+if __name__ == '__main__':
+    topic = 'temp_readings'
+    schema_registry_client = SchemaRegistryClient(sr_config)
 
+    json_serializer = JSONSerializer(schema_str,
+                                     schema_registry_client,
+                                     temp_to_dict)
+
+    producer = Producer(config)
+
+    for temp in data:
+        producer.produce(topic=topic, key=str(temp.city),
+                         value=json_serializer(temp,
+                         SerializationContext(topic, MessageField.VALUE)),
+                         on_delivery=delivery_report)
+
+    producer.flush()
