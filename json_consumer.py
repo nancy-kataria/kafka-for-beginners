@@ -48,3 +48,21 @@ if __name__ == '__main__':
 
     json_deserializer = JSONDeserializer(schema_str, from_dict=dict_to_temp)
     
+    set_consumer_configs()
+    consumer = Consumer(config)
+    consumer.subscribe([topic])
+
+    while True:
+        try:
+            event = consumer.poll(1.0)
+            if event is None:
+                continue
+            temp = json_deserializer(event.value(),
+                SerializationContext(topic, MessageField.VALUE))
+            if temp is not None:
+                print(f'Latest temp in {temp.city} is {temp.reading} {temp.unit}.')
+
+        except KeyboardInterrupt:
+            break
+
+    consumer.close()
