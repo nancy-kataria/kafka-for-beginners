@@ -43,3 +43,8 @@ schema_str = """{
 def dict_to_temp(dict, ctx):
     return Temperature(dict['city'], dict['reading'], dict['unit'], dict['timestamp'])
 
+if __name__ == '__main__':
+    topic = 'temp_readings'
+
+    json_deserializer = JSONDeserializer(schema_str, from_dict=dict_to_temp)
+    
