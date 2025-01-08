@@ -39,3 +39,7 @@ schema_str = """{
       }
     }
   }"""
+
+def dict_to_temp(dict, ctx):
+    return Temperature(dict['city'], dict['reading'], dict['unit'], dict['timestamp'])
+
