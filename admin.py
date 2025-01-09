@@ -17,3 +17,10 @@ def create_topic(admin, topic):
             print("Topic {} created".format(topic))
         except Exception as e:
             print("Failed to create topic {}: {}".format(topic, e))
+
+def get_max_size(admin, topic):
+    resource = ConfigResource('topic', topic)
+    result_dict = admin.describe_configs([resource])
+    config_entries = result_dict[resource].result()
+    max_size = config_entries['max.message.bytes']
+    return max_size.value
