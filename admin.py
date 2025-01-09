@@ -30,3 +30,24 @@ def set_max_size(admin, topic, max_k):
     resource = ConfigResource('topic', topic, config_dict)
     result_dict = admin.alter_configs([resource])
     result_dict[resource].result()
+
+if __name__ == '__main__':
+
+    # Create Admin client
+    admin = AdminClient(config)
+    topic_name = 'my_topic'
+    max_msg_k = 50
+
+    # Create topic if it doesn't exist
+    if not topic_exists(admin, topic_name):
+        create_topic(admin, topic_name)
+
+    # Check max.message.bytes config and set if needed
+    current_max = get_max_size(admin, topic_name)
+    if current_max != str(max_msg_k * 1024):
+        print(f'Topic, {topic_name} max.message.bytes is {current_max}.')
+        set_max_size(admin, topic_name, max_msg_k)
+
+    # Verify config was set
+    new_max = get_max_size(admin, topic_name)
+    print(f'Now max.message.bytes for topic {topic_name} is {new_max}')
