@@ -24,3 +24,9 @@ def get_max_size(admin, topic):
     config_entries = result_dict[resource].result()
     max_size = config_entries['max.message.bytes']
     return max_size.value
+
+def set_max_size(admin, topic, max_k):
+    config_dict = {'max.message.bytes': str(max_k*1024)}
+    resource = ConfigResource('topic', topic, config_dict)
+    result_dict = admin.alter_configs([resource])
+    result_dict[resource].result()
